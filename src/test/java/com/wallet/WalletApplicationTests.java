@@ -12,7 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 class WalletApplicationTests {
 
 	@Test
-	void contextLoads() {
+	public void contextLoads() {
 	}
 
 }

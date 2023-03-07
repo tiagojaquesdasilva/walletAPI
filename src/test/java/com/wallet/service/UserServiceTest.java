@@ -16,6 +16,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("test")
@@ -36,6 +38,6 @@ public class UserServiceTest {
     public void testFindByEmail() {
         Optional<User> user = service.findByEmail("email@test.com");
 
-        Assert.assertTrue(user.isPresent());
+        assertTrue(user.isPresent());
     }
 }
