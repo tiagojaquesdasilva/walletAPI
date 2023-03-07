@@ -4,6 +4,7 @@ import com.wallet.entity.User;
 import com.wallet.repository.UserRepository;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.BDDMockito;
 import org.mockito.Mockito;
@@ -31,6 +32,7 @@ public class UserServiceTest {
         BDDMockito.given(repository.findByEmailEquals(Mockito.anyString())).willReturn(Optional.of(new User()));
     }
 
+    @Test
     public void testFindByEmail() {
         Optional<User> user = service.findByEmail("email@test.com");
 

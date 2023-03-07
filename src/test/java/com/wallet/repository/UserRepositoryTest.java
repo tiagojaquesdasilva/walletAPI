@@ -1,7 +1,6 @@
 package com.wallet.repository;
 
 import com.wallet.entity.User;
-import org.hibernate.procedure.spi.ParameterRegistrationImplementor;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -51,6 +50,7 @@ public class UserRepositoryTest {
         assertNotNull(response);
     }
 
+    @Test
     public void testFindByEmail() {
         Optional<User> response = repository.findByEmailEquals(EMAIL);
 
