@@ -25,3 +25,34 @@ TDD é uma sigla para Test Driven Development, ou Desenvolvimento Orientado a Te
 
 Mock chamada de metodo:
 ex: BDDMockito.given(service.save(Mockito.any(User.class))).willReturn(getMockUser());
+
+
+#Configurar e usar banco de dados
+1-instalar PostgreSQL interface PgAdmin4
+2-local: src\main\resources\application.properties
+    sugestão de configuração
+        spring.profile.active=dev
+
+        spring.datasouce.url=jdbc:postgresql://localhost:5432/nomeBaseDados?user=postegres&password=senha //config de conexão
+        spring.jpa.hibernate.ddl-auto=none //destivando atualização da base pelo hibernate
+
+        spring.jpa.properties.hibernate.show_sql=true //mostrar o SQL executado no console
+        spring.jpa.properties.hibernate.user_sql_comments=true
+        spring.jpa.properties.hibernate.format_sql=true //formata o que for exibido
+        spring.jpa.properties.hibernatetype=trace //nivel de retorno do processo
+3-adicionar dependencia no pom.xml
+    exemplo:<dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <scope>runtime</scope>
+            </dependency>
+
+
+#Adicionado um integrador de banco de dados(Flyway é uma ferramenta de migração de banco de dados)
+1-cria pastas e arquivo .db
+    sugestão: src\main\resources\application.properties\db\migration\postgresql\V1__init.sql
+2-adicionar no pom.xml
+    exemplo:<dependency>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-core</artifactId>
+            </dependency>
