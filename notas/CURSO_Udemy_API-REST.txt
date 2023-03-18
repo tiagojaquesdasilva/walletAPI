@@ -1,0 +1,58 @@
+Resumo Curso API REST com Spring Boot utilizando TDD, CI E CD
+
+
+REST - Representational State Transfer -tradução:Transferencia de estado Representacional
+
+API considerada RESTfull(deve ter esses 4 requisitos):
+
+PRINCIPIOS:
+1-STATELES: Varia requisições com informações completas(independentes)
+cliente -> internet ->servidor -> Banco de dados
+
+2-CACHE: Dados pedidos recorrentemente que ficam armazenado para melhorar performace
+cliente -> internet ->servidor -> cache
+
+3-UNIFORM INTERFACE: Regras cliente<->servidor(ex:padronizar uri Json)
+
+4-LAYRED SYSTEM: É uma arquitetura em camada, sem possivel ver apenas a camada imediata que está interagindo.
+
+
+TDD é uma sigla para Test Driven Development, ou Desenvolvimento Orientado a Testes. A ideia do TDD é que você trabalhe em ciclos. Estes ciclos ocorrem na seguinte ordem:
+
+1-Primeiro, escreva um teste unitário que inicialmente irá falhar, tendo em vista que o código ainda não foi implementado;
+2-Crie o código que satisfaça esse teste, ou seja: implemente a funcionalidade em questão. Essa primeira implementação deverá satisfazer imediatamente o teste que foi escrito no ciclo anterior;
+3-Quando o código estiver implementado e o teste satisfeito, refatore o código para melhorar pontos como legibilidade. Logo após, execute o teste novamente. A nova versão do código também deverá passar sem que seja necessário modificar o teste escrito inicialmente.
+
+Mock chamada de metodo:
+ex: BDDMockito.given(service.save(Mockito.any(User.class))).willReturn(getMockUser());
+
+
+#Configurar e usar banco de dados
+1-instalar PostgreSQL interface PgAdmin4
+2-local: src\main\resources\application.properties
+    sugestão de configuração
+        spring.profile.active=dev
+
+        spring.datasouce.url=jdbc:postgresql://localhost:5432/nomeBaseDados?user=postegres&password=senha //config de conexão
+        spring.jpa.hibernate.ddl-auto=none //destivando atualização da base pelo hibernate
+
+        spring.jpa.properties.hibernate.show_sql=true //mostrar o SQL executado no console
+        spring.jpa.properties.hibernate.user_sql_comments=true
+        spring.jpa.properties.hibernate.format_sql=true //formata o que for exibido
+        spring.jpa.properties.hibernatetype=trace //nivel de retorno do processo
+3-adicionar dependencia no pom.xml
+    exemplo:<dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <scope>runtime</scope>
+            </dependency>
+
+
+#Adicionado um integrador de banco de dados(Flyway é uma ferramenta de migração de banco de dados)
+1-cria pastas e arquivo .db
+    sugestão: src\main\resources\application.properties\db\migration\postgresql\V1__init.sql
+2-adicionar no pom.xml
+    exemplo:<dependency>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-core</artifactId>
+            </dependency>
