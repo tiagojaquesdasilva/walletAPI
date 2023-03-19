@@ -56,3 +56,20 @@ ex: BDDMockito.given(service.save(Mockito.any(User.class))).willReturn(getMockUs
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-core</artifactId>
             </dependency>
+
+#Segurança
+1-adicionar no pom.xml o spring-security
+    exemplo: <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-security</artifactId>
+            </dependency>
+2-apartir de agora temos o Bcript disponivel, sendo possivel criptografar senha e tornando as rota segura/restritas.
+3-com rotas restritas pode se liberalas temporariamente com a config a baixo e as devidas notations na classe -> @Configuration @EnableWebSecurity
+    sugestão: "src\main\java\com\wallet\security\config\SecurityConfiguration.java" que extends "WebSecurityConfigurerAdapter"
+    exemplo: @Override
+             protected void configure(HttpSecurity http) throws Exception {
+                 http.csrf().disable().exceptionHandling().and().sessionManagement()
+                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
+                         .antMatchers("**")
+                         .permitAll().anyRequest().authenticated();
+             }

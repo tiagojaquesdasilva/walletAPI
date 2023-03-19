@@ -1,0 +1,31 @@
+package com.wallet.entity;
+
+import lombok.Data;
+
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import java.io.Serializable;
+
+@Entity
+@Table(name = "users_wallet")
+@Data
+public class UserWallet implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @JoinColumn(name = "users", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User users;
+
+    @JoinColumn(name = "wallet", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Wallet wallet;
+}
