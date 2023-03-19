@@ -33,14 +33,14 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
 
-        User user = service.save(this.convertDtoEntity(dto));
+        User user = service.save(this.convertDtoToEntity(dto));
 
         response.setData(this.convertEntityToDto(user));
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    private User convertDtoEntity(UserDTO dto) {
+    private User convertDtoToEntity(UserDTO dto) {
         User u = new User();
         u.setId(dto.getId());
         u.setEmail(dto.getEmail());

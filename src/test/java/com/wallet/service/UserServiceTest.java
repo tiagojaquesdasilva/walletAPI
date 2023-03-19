@@ -2,7 +2,6 @@ package com.wallet.service;
 
 import com.wallet.entity.User;
 import com.wallet.repository.UserRepository;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
