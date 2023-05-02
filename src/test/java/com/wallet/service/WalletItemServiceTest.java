@@ -65,6 +65,30 @@ public class WalletItemServiceTest {
         Assert.assertEquals(response.getContent().get(0).getDescription(), DESCRIPTION);
     }
 
+    @Test
+    public void testFindByType() {
+        List<WalletItem> list = new ArrayList<>();
+        list.add(getMockWalletItem());
+
+        BDDMockito.given(repository.findByWalletIdAndType(Mockito.anyLong(),Mockito.any(TypeEnum.class))).willReturn(list);
+
+        List<WalletItem> response = service.findByWalletIdAndType(1L, TypeEnum.EN);
+
+        Assert.assertNotNull(response);
+        Assert.assertEquals(response.get(0).getType(), TYPE);
+    }
+
+    @Test
+    public void testSumByWallet() {
+        BigDecimal value = BigDecimal.valueOf(45);
+
+        BDDMockito.given(repository.sumByWalletId(Mockito.anyLong())).willReturn(value);
+
+        BigDecimal response = service.sumByWalletId(1L);
+
+        Assert.assertEquals(response.compareTo(value), 0);
+    }
+
     private WalletItem getMockWalletItem() {
         Wallet w =new Wallet();
         w.setId(1L);
