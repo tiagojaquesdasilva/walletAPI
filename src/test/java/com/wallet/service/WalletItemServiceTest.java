@@ -70,9 +70,9 @@ public class WalletItemServiceTest {
         List<WalletItem> list = new ArrayList<>();
         list.add(getMockWalletItem());
 
-        BDDMockito.given(repository.findByWalletIdAndType(Mockito.anyLong(),Mockito.any(TypeEnum.class))).willReturn(list);
+        BDDMockito.given(repository.findByWalletAndType(Mockito.anyLong(),Mockito.any(TypeEnum.class))).willReturn(list);
 
-        List<WalletItem> response = service.findByWalletIdAndType(1L, TypeEnum.EN);
+        List<WalletItem> response = service.findByWalletAndType(1L, TypeEnum.EN);
 
         Assert.assertNotNull(response);
         Assert.assertEquals(response.get(0).getType(), TYPE);

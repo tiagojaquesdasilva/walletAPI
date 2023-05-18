@@ -133,7 +133,7 @@ public class WalletItemRepositoryTest {
 
     @Test
     public void testFindByType() {
-        List<WalletItem> response = repository.findByWalletIdAndType(savedWalletId, TYPE);
+        List<WalletItem> response = repository.findByWalletAndType(savedWalletId, TYPE);
 
         Assert.assertEquals(response.size(), 1);
         Assert.assertEquals(response.get(0).getType(), TYPE);
@@ -145,7 +145,7 @@ public class WalletItemRepositoryTest {
 
         repository.save(new WalletItem(null, w.get(), DATE, TypeEnum.SD, DESCRIPTION, VALUE));
 
-        List<WalletItem> response = repository.findByWalletIdAndType(savedWalletId, TypeEnum.SD);
+        List<WalletItem> response = repository.findByWalletAndType(savedWalletId, TypeEnum.SD);
 
         Assert.assertEquals(response.size(), 1);
         Assert.assertEquals(response.get(0).getType(), TypeEnum.SD);

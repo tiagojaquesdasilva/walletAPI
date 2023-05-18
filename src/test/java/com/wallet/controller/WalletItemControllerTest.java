@@ -29,6 +29,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -51,7 +52,7 @@ public class WalletItemControllerTest {
     private static final TypeEnum TYPE = TypeEnum.EN;
     private static final String DESCRIPTION = "Conta de Luz";
     private static final BigDecimal VALUE = BigDecimal.valueOf(65);
-    private static final String URL = "/user-item";
+    private static final String URL = "/wallet-item";
 
     @Test
     public void testSave() throws Exception {
@@ -81,7 +82,7 @@ public class WalletItemControllerTest {
 
         BDDMockito.given(service.findBetweenDates(Mockito.anyLong(), Mockito.any(Date.class), Mockito.any(Date.class), Mockito.anyInt())).willReturn(page);
 
-        mvc.perform(MockMvcRequestBuilders.get(URL + "/?startDate=" + startDate + "&endDate=" + endDate)
+        mvc.perform(MockMvcRequestBuilders.get(URL + "/1?startDate=" + startDate + "&endDate=" + endDate)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -98,7 +99,7 @@ public class WalletItemControllerTest {
         List<WalletItem> list = new ArrayList<>();
         list.add(getMockWalletItem());
 
-        BDDMockito.given(service.findByWalletIdAndType(Mockito.anyLong(), Mockito.any(TypeEnum.class))).willReturn(list);
+        BDDMockito.given(service.findByWalletAndType(Mockito.anyLong(), Mockito.any(TypeEnum.class))).willReturn(list);
 
         mvc.perform(MockMvcRequestBuilders.get(URL + "/type/1?type=ENTRADA")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -111,6 +112,97 @@ public class WalletItemControllerTest {
                 .andExpect(jsonPath("$.data.[0].value").value(VALUE))
                 .andExpect(jsonPath("$.data.[0].wallet").value(ID));
     }
+
+    @Test
+    public void testSumByWallet() throws Exception {
+        BigDecimal value = BigDecimal.valueOf(536.90);
+
+        BDDMockito.given(service.sumByWalletId(Mockito.anyLong())).willReturn(value);
+
+        mvc.perform(MockMvcRequestBuilders.get(URL + "/total/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data").value("536.9"));
+
+    }
+
+    @Test
+    public void testUpdate() throws Exception {
+        String description = "Nova descrição";
+        Wallet w = new Wallet();
+        w.setId(ID);
+
+        BDDMockito.given(service.findById(Mockito.anyLong())).willReturn(Optional.of(getMockWalletItem()));
+        BDDMockito.given(service.save(Mockito.any(WalletItem.class))).willReturn(new WalletItem(1L, w, DATE, TypeEnum.SD, description, VALUE));
+
+        mvc.perform(MockMvcRequestBuilders.put(URL).content(getJsonPayload())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.id").value(ID))
+                .andExpect(jsonPath("$.data.date").value(TODAY.format(getDateFormater())))
+                .andExpect(jsonPath("$.data.description").value(description))
+                .andExpect(jsonPath("$.data.type").value(TypeEnum.SD.getValue()))
+                .andExpect(jsonPath("$.data.value").value(VALUE))
+                .andExpect(jsonPath("$.data.wallet").value(ID));
+
+    }
+
+    @Test
+    public void testUpdateWalletChange() throws Exception {
+        Wallet w = new Wallet();
+        w.setId(99L);
+
+        WalletItem wi = new WalletItem(1L, w, DATE, TypeEnum.SD, DESCRIPTION, VALUE);
+        BDDMockito.given(service.findById(Mockito.anyLong())).willReturn(Optional.of(wi));
+
+        mvc.perform(MockMvcRequestBuilders.put(URL).content(getJsonPayload())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.data").doesNotExist())
+                .andExpect(jsonPath("$.errors[0]").value("Você não pode alterar a carteira"));
+    }
+
+    @Test
+    public void testUpdateInvalidId() throws Exception {
+
+        BDDMockito.given(service.findById(Mockito.anyLong())).willReturn(Optional.empty());
+
+        mvc.perform(MockMvcRequestBuilders.put(URL).content(getJsonPayload())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.data").doesNotExist())
+                .andExpect(jsonPath("$.errors[0]").value("WalletItem não encontrado"));
+    }
+
+    @Test
+    public void testDelete() throws Exception {
+
+        BDDMockito.given(service.findById(Mockito.anyLong())).willReturn(Optional.of(new WalletItem()));
+
+        mvc.perform(MockMvcRequestBuilders.delete(URL+"/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data").value("Carteira de id "+ ID +" apagada com sucesso"));
+    }
+
+    @Test
+    public void testDeleteInvalid() throws Exception {
+
+        BDDMockito.given(service.findById(Mockito.anyLong())).willReturn(Optional.empty());
+
+        mvc.perform(MockMvcRequestBuilders.delete(URL+"/99")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.data").doesNotExist())
+                .andExpect(jsonPath("$.errors[0]").value("Carteira de id "+ 99 +" não encontrada"));
+    }
+
     private WalletItem getMockWalletItem() {
         Wallet w = new Wallet();
         w.setId(1L);

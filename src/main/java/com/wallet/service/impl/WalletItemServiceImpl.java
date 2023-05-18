@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class WalletItemServiceImpl implements WalletItemService {
@@ -30,19 +31,28 @@ public class WalletItemServiceImpl implements WalletItemService {
 
     @Override
     public Page<WalletItem> findBetweenDates(Long wallet, Date start, Date end, int page) {
-        @SuppressWarnings("deprecation")
         PageRequest pg = PageRequest.of(page, itemPerPage);
 
         return repository.findAllByWalletIdAndDateGreaterThanEqualAndDateLessThanEqual(wallet, start, end, pg);
     }
 
     @Override
-    public List<WalletItem> findByWalletIdAndType(long wallet, TypeEnum type) {
-        return repository.findByWalletIdAndType(wallet, type);
+    public List<WalletItem> findByWalletAndType(long wallet, TypeEnum type) {
+        return repository.findByWalletAndType(wallet, type);
     }
 
     @Override
     public BigDecimal sumByWalletId(long wallet) {
         return repository.sumByWalletId(wallet);
+    }
+
+    @Override
+    public Optional<WalletItem> findById(Long id) {
+        return repository.findById(id);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        repository.deleteById(id);
     }
 }
