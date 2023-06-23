@@ -38,7 +38,7 @@ public class WalletItemServiceImpl implements WalletItemService {
 
     @Override
     public List<WalletItem> findByWalletAndType(long wallet, TypeEnum type) {
-        return repository.findByWalletAndType(wallet, type);
+        return repository.findByWallet_IdAndType(wallet, type);
     }
 
     @Override

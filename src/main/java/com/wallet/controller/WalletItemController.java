@@ -67,7 +67,7 @@ public class WalletItemController {
 
     @GetMapping(value = "/type/{wallet}")
     public ResponseEntity<Response<List<WalletItemDTO>>> findByWalletIdAndType(@PathVariable("wallet") Long wallet,
-                                                                               @PathVariable("type") String type) {
+                                                                               @RequestParam("type") String type) {
         Response<List<WalletItemDTO>> response = new Response<List<WalletItemDTO>>();
         List<WalletItem> list = service.findByWalletAndType(wallet, TypeEnum.getEnum(type));
 
@@ -113,11 +113,11 @@ public class WalletItemController {
         Optional<WalletItem> wi = service.findById(walletItemId);
 
         if (!wi.isPresent()) {
-            response.getErrors().add("Carteira de id " + walletItemId + " não encontrada");
+            response.getErrors().add("WalletItem de id " + walletItemId + " não encontrada");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
         service.deleteById(walletItemId);
-        response.setData("Carteira de id "+ walletItemId + " apagada com sucesso");
+        response.setData("WalletItem de id "+ walletItemId + " apagada com sucesso");
         return ResponseEntity.ok().body(response);
     }
 
