@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @Data
 public class Wallet implements Serializable {
 
-    //private static final long serialVersionUID = -6056546545415148L;
+    private static final long serialVersionUID = -6056546545415148L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

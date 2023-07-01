@@ -27,6 +27,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class WalletItem implements Serializable {
 
+    private static final long serialVersionUID = -1796790346218894235L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

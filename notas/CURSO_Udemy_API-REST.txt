@@ -73,3 +73,6 @@ ex: BDDMockito.given(service.save(Mockito.any(User.class))).willReturn(getMockUs
                          .antMatchers("**")
                          .permitAll().anyRequest().authenticated();
              }
+4-A implemntação da interface AuthenticationEntryPoint e o Override/sobrescrição do metodo "commence" serve para retornar uma mensagem prsonalisada quando o ususario não estiver acesso/autenticado.
+
+5-A implementação da interface UserDetailsServicee o Override/sobrescrição do metodo "loadUserByUsername" tem por objetivo criar o "usuario" pelo email e se existir.

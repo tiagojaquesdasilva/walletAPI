@@ -14,6 +14,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -42,6 +43,7 @@ public class UserWalletControllerTest {
     MockMvc mvc;
 
     @Test
+    @WithMockUser
     public void testeSave() throws Exception {
 
         BDDMockito.given(service.save(Mockito.any(Wallet.class))).willReturn(getMockWallet());
@@ -56,6 +58,7 @@ public class UserWalletControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void testSaveInvalidName() throws Exception {
 
         mvc.perform(MockMvcRequestBuilders.post(URL).content(getJsonPayload(ID, null, VALUE))
