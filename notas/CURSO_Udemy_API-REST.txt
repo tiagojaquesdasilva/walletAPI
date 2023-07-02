@@ -76,3 +76,28 @@ ex: BDDMockito.given(service.save(Mockito.any(User.class))).willReturn(getMockUs
 4-A implemntação da interface AuthenticationEntryPoint e o Override/sobrescrição do metodo "commence" serve para retornar uma mensagem prsonalisada quando o ususario não estiver acesso/autenticado.
 
 5-A implementação da interface UserDetailsServicee o Override/sobrescrição do metodo "loadUserByUsername" tem por objetivo criar o "usuario" pelo email e se existir.
+
+#Adicionando Swagger
+1-adicionar no pom.xml o Swagger
+      exemplo: <dependency>
+                    <groupId>io.springfox</groupId>
+                    <artifactId>springfox-swagger2</artifactId>
+                    <version>2.6.1</version>
+                </dependency>
+                <dependency>
+                    <groupId>io.springfox</groupId>
+                    <artifactId>springfox-swagger-ui</artifactId>
+                    <version>2.6.1</version>
+                </dependency>
+2-adicionar configuração("SwaggerConfig").
+3-adicionando usuario desenvolvedor para liberar as rotas("V2__swagger-user.sql").
+4-ajuste na classe de configuração do pacote de segurança para liberar roda para o swagger.
+
+#Adicionando cache
+1-adicionar no pom.xml o echache
+      exemplo: <dependency>
+                    <groupId>net.sf.ehcache</groupId>
+                    <artifactId>ehcache</artifactId>
+                </dependency>
+1-adicionar notação no Application "@EnableCaching" que ira esperar um arquivo "ehcache.xml" colocado no resources.
+2-adicionar na notação no service(@CacheEvict(value = "findByWalletAndType", allEntries = true)) para limpar o cache na busca do "findByWalletAndType".
