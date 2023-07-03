@@ -56,5 +56,4 @@ public class SwaggerConfig {
 		return new SecurityConfiguration(null, null, null, null, "Bearer " + token, ApiKeyVehicle.HEADER,
 				"Authorization", ",");
 	}
-
 }
