@@ -1,0 +1,1 @@
+web: java -jar -Dspring.profiles.active=prod -Dserver.port=$PORT target/wallet-2.4.1.jar
