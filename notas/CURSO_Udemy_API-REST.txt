@@ -101,3 +101,11 @@ ex: BDDMockito.given(service.save(Mockito.any(User.class))).willReturn(getMockUs
                 </dependency>
 1-adicionar notação no Application "@EnableCaching" que ira esperar um arquivo "ehcache.xml" colocado no resources.
 2-adicionar na notação no service(@CacheEvict(value = "findByWalletAndType", allEntries = true)) para limpar o cache na busca do "findByWalletAndType".
+
+#Heroku
+1-adicionar os arquivos de configurações "application-prod.properties" e "Procfile" para o funcionamento da aplicação.
+2-com as intruções da plataforma Heroku deve-se criar um app na plataforma e subir o projeto nele, após deploy no app deve-se configura um banco de dados que no nosso caso é PostgresSql.
+
+#Travis
+1-adicionar arquivo ".travis.yml"
+2-configura o arquivo travis adicionando variaveis de acesso ao herocu no Travis.com no respectivo projeto, comando para gerar chave de acesso no Git Bash é "herocu auth:token" e adicionando o nome do APP no herocu tambem.
